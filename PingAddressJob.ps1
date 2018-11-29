@@ -1,21 +1,20 @@
 ﻿
-#$site = "https://www.testt12.com"
-$site = "https://www.apc-us.com/"
-$secpasswd = ConvertTo-SecureString "Dcz4848!$" -AsPlainText -Force
-$mycreds = New-Object System.Management.Automation.PSCredential ("damian@48first.com", $secpasswd)
 
 Start-job -Name Test -ScriptBlock {DO{
     $status = Get-UrlStatusCode $site
     write-Host $status
-    $site = "https://www.apc-us.com/"
-    $secpasswd = ConvertTo-SecureString "Dcz4848!$" -AsPlainText -Force
-    $mycreds = New-Object System.Management.Automation.PSCredential ("damian@48first.com", $secpasswd)
+    $site = "<address to ping>"
+    $secpasswd = ConvertTo-SecureString "<Password>" -AsPlainText -Force
+    $mycreds = New-Object System.Management.Automation.PSCredential ("<email address>", $secpasswd)
+    $from = "<email>"
+    $to = "<email>"
+    $smtp = "<server>"
     if($status -ne 200){
-        #$badSub = "Website " + $site + "status:" + $status
+        
         $badSub = "Website is Down"
         $body = "Status of " + $site + ": " + $status
         Write-Host $body
-        Send-MailMessage -To "Help <help@48first.com>; Nathalie <n.lemaire@apc.fr>" -From "Damian  <damian@48first.com>" -Subject $badSub -Body $body.ToString()  -SmtpServer "mail.48first.com" -Credential $mycreds
+        Send-MailMessage -To $to -From $from -Subject $badSub -Body $body.ToString()  -SmtpServer $smtp -Credential $mycreds
     }
     Start-Sleep 60
 }while ($site)}
